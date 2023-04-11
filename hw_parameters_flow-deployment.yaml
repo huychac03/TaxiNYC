@@ -1,0 +1,59 @@
+###
+### A complete description of a Prefect Deployment for flow 'hw-parameters-flow'
+###
+name: HW_Param_Web_to_GCP
+description: null
+version: c14f6a019f5493e34ac144cfdffa204c
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: null
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: hw-parameters-flow
+manifest_path: null
+storage: null
+path: C:\taxi_newenv
+entrypoint: homework\gcp\hw_param_etl_web_to_gcs.py:hw_parameters_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    months:
+      title: months
+      default:
+      - 1
+      - 2
+      position: 0
+      type: array
+      items:
+        type: integer
+    year:
+      title: year
+      default: 2019
+      position: 1
+      type: integer
+    color:
+      title: color
+      default: yellow
+      position: 2
+      type: string
+  required: null
+  definitions: null
+timestamp: '2023-04-05T03:59:37.425052+00:00'
