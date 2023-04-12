@@ -16,8 +16,8 @@ def fetch(dataset_url: str) -> pd.DataFrame:
 @task(log_prints=True)
 def clean(df = pd.DataFrame()) -> pd.DataFrame:
     """Clean Data in df"""
-    df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
-    df['tpep_dropoff_datetime'] = pd.to_datetime(df['tpep_dropoff_datetime'])
+    df['lpep_pickup_datetime'] = pd.to_datetime(df['lpep_pickup_datetime'])
+    df['lpep_dropoff_datetime'] = pd.to_datetime(df['lpep_dropoff_datetime'])
     print(f"rows: {len(df)}")
     print(f"column : {df.dtypes}")
     return df
@@ -34,10 +34,10 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
 
 
 @task(log_prints=True)
-def write_gcs(path: Path) -> None:
+def write_gcs(path: Path, dataset_file: str) -> None:
     """Write to GCS"""
     gcp_cloud_storage_bucket_block = GcsBucket.load("zoomcamp-gcs")
-    gcp_cloud_storage_bucket_block.upload_from_path(from_path = f"{path}", to_path=path, timeout = 1000)
+    gcp_cloud_storage_bucket_block.upload_from_path(from_path = f"{path}", to_path=f"green-new/{dataset_file}", timeout = 1000)
     return
 
 
@@ -65,7 +65,7 @@ def web_to_gcs(month: int, year: int, color: str) -> None:
     df = fetch(dataset_url)
     df_cleaned = clean(df)
     path= write_local(df_cleaned, color, dataset_file)    
-    write_gcs(path)
+    write_gcs(path, dataset_file)
     remove_local(path)
 
 
@@ -81,7 +81,7 @@ def hw_parameters_flow(
 
 
 if __name__ == '__main__':
-    color = "yellow"
+    color = "green"
     year = 2019
-    months = [1,2]
+    months = [1,2,3,4,5,6,7,8,9,10,11,12]
     hw_parameters_flow(months, year, color)
