@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: staging
+    database: cryptic-skyline-379306
+    schema: trips_data_all
+
+    tables:
+      - name: green_data
+      - name: yellow_data
+      - name: green_data_partition_cluster
