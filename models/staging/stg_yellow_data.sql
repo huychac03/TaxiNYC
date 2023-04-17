@@ -3,17 +3,17 @@
 with tripdata as 
 (
   select *,
-    row_number() over(partition by vendorid, tpep_pickup_datetime) as rn
+    row_number() over(partition by VendorID, tpep_pickup_datetime) as rn
   from {{ source('staging','yellow_data') }}
-  where vendorid is not null 
+  where VendorID is not null 
 )
 select
     -- identifiers
-    {{ dbt_utils.generate_surrogate_key(['vendorid', 'tpep_pickup_datetime']) }} as trip_id,
-    cast(vendorid as integer) as vendor_id,
-    cast(ratecodeid as integer) as ratecode_id,
-    cast(pulocationid as integer) as  pickup_location_id,
-    cast(dolocationid as integer) as dropoff_location_id,
+    {{ dbt_utils.generate_surrogate_key(['VendorID', 'tpep_pickup_datetime']) }} as trip_id,
+    cast(VendorID as integer) as vendor_id,
+    cast(RatecodeID as integer) as ratecode_id,
+    cast(PULocationID as integer) as  pickup_location_id,
+    cast(DOLocationID as integer) as dropoff_location_id,
     
     -- timestamps
     cast(tpep_pickup_datetime as timestamp) as pickup_datetime,
@@ -43,7 +43,7 @@ where rn = 1
 
 -- dbt build --m <model.sql> --var 'is_test_run: false'
 {% if var('is_test_run', default = true) %}
-    limit 100
+    --limit 100
 {% endif %}
 
 {# This is a dbt macro code that uses a conditional statement to check the value of the is_test_run variable. 

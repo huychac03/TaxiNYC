@@ -34,4 +34,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_taxi_nyc:
     # Applies to all files under models/example/
-
+    staging:
+          materialized: view
+    core:
+          materialized: table
+vars:
+  payment_type_values: [1, 2, 3, 4, 5, 6]
