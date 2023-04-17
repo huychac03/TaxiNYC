@@ -34,3 +34,4 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_taxi_nyc:
     # Applies to all files under models/example/
+
