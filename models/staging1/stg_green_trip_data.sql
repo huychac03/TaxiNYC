@@ -1,11 +1,12 @@
 {{ config(materialized='view') }}
 
-with tripdata as 
-(
-  select *,
-    row_number() over(partition by VendorID, lpep_pickup_datetime) as rn -- cái này dùng để tránh lặp dữ liệu (ở bên dưới ta sẽ chọn những row có rn =1 thôi)
-  from {{ source('staging','green_data') }}
-  where VendorID is not null 
+with data_green as (
+
+    select *,
+        row_number() over(partition by VendorID, lpep_pickup_datetime) as rn
+    from {{ source('staging1_2', 'green_data') }}
+    where VendorID is not null   
+    
 )
 select
     -- identifiers
@@ -37,19 +38,5 @@ select
     cast(payment_type as integer) as payment_type,
     {{ get_payment_type_description('payment_type') }} as payment_type_description,
     cast(congestion_surcharge as numeric) as congestion_surcharge
-from tripdata
+from data_green
 where rn = 1
-
--- dbt build --m <model.sql> --var 'is_test_run: false'
-{% if var('is_test_run', default = true) %}
-    --limit 100
-{% endif %}
-
-{# This is a dbt macro code that uses a conditional statement to check the value of the is_test_run variable. 
-    If the variable is not defined, it will use a default value of true.
-
-If the value of is_test_run is true, then the macro will add a LIMIT 100 clause to the SQL query. 
-If the value of is_test_run is false or not defined, then the LIMIT clause will not be added to the query.
-
-This macro can be useful when you want to limit the number 
-of rows returned by a query during testing, but not during production. #}

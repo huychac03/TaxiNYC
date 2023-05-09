@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: fact_fhv_trip
+    description: >
+      HW week 4 
