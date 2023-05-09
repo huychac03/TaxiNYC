@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: staging1_1
+    database: cryptic-skyline-379306
+    schema: fhv
+    tables:
+      - name: fhv_table_partition_and_cluster
+
+  - name: staging1_2
+    database: cryptic-skyline-379306
+    schema: trips_data_all
+    tables:
+      - name: green_data
+      - name: yellow_data
+
+models:
+  - name: stg_fhv
+    description: >
+      This is data of For Hire Vehicles from 2019 to 2020 in NYC
+    columns:
+      - name: dispatching_base_num
+        description: >
+           It refers to the identification number or code of a dispatching base,
+           which is a location where vehicles are stationed and dispatched from to provide services to customers.
+        tests:
+          - not_null:
+              severity: warn
+
+      - name: pickup_location_id
+        tests:
+          - not_null:
+              severity: warn
+        
+      - name: dropoff_location_id
+        tests:
+          - not_null:
+              severity: warn

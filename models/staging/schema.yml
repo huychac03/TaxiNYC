@@ -1,12 +1,12 @@
 version: 2
 
 sources:
-  - name: staging
-    database: cryptic-skyline-379306
-    schema: trips_data_all
+  - name: staging                       #tên folder (nên để vậy nếu chỉ có 1 source nếu có 2 source trở nên thì nên đặt tên khác)
+    database: cryptic-skyline-379306    #ID của project trên GBQ
+    schema: trips_data_all              #dataset chưa dữ liệu
 
     tables:
-      - name: green_data
+      - name: green_data                #các bảng có data cần thiết
       - name: yellow_data
       - name: green_data_partition_cluster
 
